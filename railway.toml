@@ -6,3 +6,4 @@ dockerfilePath = "frontend/Dockerfile"
 healthcheckPath = "/"
 healthcheckTimeout = 100
 restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 10
