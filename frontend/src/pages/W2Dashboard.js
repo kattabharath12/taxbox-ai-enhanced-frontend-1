@@ -39,7 +39,7 @@ const W2Dashboard = () => {
       const totalWithholdings = calculateTotalWithholdings();
 
       const token = localStorage.getItem('token');
-      const response = await axios.post('/tax-returns', {
+      await axios.post('/tax-returns', {
         tax_year: new Date().getFullYear() - 1,
         income: totalIncome,
         withholdings: totalWithholdings
