@@ -94,8 +94,10 @@ const SubmissionStatus = () => {
                   <div className="mt-3">
                     <small className="text-muted">Created: {new Date(taxReturn.created_at).toLocaleDateString()}</small>
                     {taxReturn.submitted_at && (
-                      <br />
-                      <small className="text-muted">Submitted: {new Date(taxReturn.submitted_at).toLocaleDateString()}</small>
+                      <>
+                        <br />
+                        <small className="text-muted">Submitted: {new Date(taxReturn.submitted_at).toLocaleDateString()}</small>
+                      </>
                     )}
                   </div>
 
