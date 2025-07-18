@@ -31,7 +31,7 @@ const TaxWizard = () => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const response = await axios.post('/tax-returns', {
+      await axios.post('/tax-returns', {
         tax_year: parseInt(formData.tax_year),
         income: parseFloat(formData.income),
         withholdings: parseFloat(formData.withholdings),
