@@ -12,9 +12,20 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(localStorage.getItem('token'));
 
-  // Set API base URL based on environment
-  const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+  // TEMPORARILY HARDCODE THE API URL FOR TESTING
+  const API_BASE_URL = 'https://taxbox-ai-enhanced-backend-1-production.up.railway.app';
+  
+  // Log for debugging
+  console.log('API_BASE_URL set to:', API_BASE_URL);
+  
   axios.defaults.baseURL = API_BASE_URL;
+
+  const logout = useCallback(() => {
+    localStorage.removeItem('token');
+    setToken(null);
+    setCurrentUser(null);
+    delete axios.defaults.headers.common['Authorization'];
+  }, []);
 
   const fetchUser = useCallback(async () => {
     try {
@@ -26,7 +37,7 @@ export const AuthProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [logout]);
 
   useEffect(() => {
     if (token) {
@@ -54,16 +65,10 @@ export const AuthProvider = ({ children }) => {
   };
 
   const register = async (userData) => {
+    console.log('Making registration request to:', axios.defaults.baseURL + '/register');
     const response = await axios.post('/register', userData);
     return response.data;
   };
-
-  const logout = useCallback(() => {
-    localStorage.removeItem('token');
-    setToken(null);
-    setCurrentUser(null);
-    delete axios.defaults.headers.common['Authorization'];
-  }, []);
 
   const value = {
     currentUser,
