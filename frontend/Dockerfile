@@ -5,13 +5,13 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Use npm install instead of npm ci (since there's no package-lock.json)
+# Install dependencies
 RUN npm install
 
 # Copy source code
 COPY . .
 
-# Set environment variables to disable strict linting
+# Set environment variables
 ENV CI=false
 ENV GENERATE_SOURCEMAP=false
 
@@ -22,7 +22,7 @@ RUN npm run build
 RUN npm install -g serve
 
 # Expose port
-EXPOSE 3000
+EXPOSE $PORT
 
-# Start the app
+# Start the app - Use Railway's PORT environment variable
 CMD ["sh", "-c", "serve -s build -l ${PORT:-3000}"]
