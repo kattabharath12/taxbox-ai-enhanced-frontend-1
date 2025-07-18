@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -15,13 +15,7 @@ const Payment = () => {
   const [loading, setLoading] = useState(false);
   const taxReturnId = searchParams.get('tax_return_id');
 
-  useEffect(() => {
-    if (taxReturnId) {
-      fetchTaxReturn();
-    }
-  }, [taxReturnId]);
-
-  const fetchTaxReturn = async () => {
+  const fetchTaxReturn = useCallback(async () => {
     try {
       const response = await axios.get('/tax-returns');
       const returns = response.data;
@@ -30,7 +24,13 @@ const Payment = () => {
     } catch (error) {
       console.error('Error fetching tax return:', error);
     }
-  };
+  }, [taxReturnId]);
+
+  useEffect(() => {
+    if (taxReturnId) {
+      fetchTaxReturn();
+    }
+  }, [taxReturnId, fetchTaxReturn]);
 
   const handleChange = (e) => {
     setPaymentData({
@@ -151,7 +151,7 @@ const Payment = () => {
                     className="btn btn-primary w-100"
                     disabled={loading}
                   >
-                    {loading ? 'Processing...' : `Pay $${taxReturn.amount_owed.toFixed(2)}`}
+                    {loading ? 'Processing...' : `Pay ${taxReturn.amount_owed.toFixed(2)}`}
                   </button>
                 </form>
               </div>
