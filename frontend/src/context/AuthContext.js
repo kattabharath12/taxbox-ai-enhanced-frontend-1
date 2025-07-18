@@ -64,10 +64,29 @@ export const AuthProvider = ({ children }) => {
     return response.data;
   };
 
+  // UPDATED REGISTER FUNCTION - TESTS MULTIPLE ENDPOINTS
   const register = async (userData) => {
-    console.log('Making registration request to:', axios.defaults.baseURL + '/register');
-    const response = await axios.post('/register', userData);
-    return response.data;
+    // Try different possible endpoints
+    const endpoints = ['/register', '/api/register', '/api/v1/register', '/auth/register', '/users/register'];
+    
+    for (const endpoint of endpoints) {
+      try {
+        console.log('Trying registration request to:', axios.defaults.baseURL + endpoint);
+        const response = await axios.post(endpoint, userData);
+        console.log('SUCCESS with endpoint:', endpoint);
+        return response.data;
+      } catch (error) {
+        console.log('Failed with endpoint:', endpoint, 'Error:', error.response?.status || error.message);
+        // If it's not a 404, it might be a different error, so continue trying
+        if (error.response?.status !== 404) {
+          // Log non-404 errors but continue to next endpoint
+          console.log('Non-404 error details:', error.response?.data);
+        }
+      }
+    }
+    
+    // If all endpoints failed, throw the last error
+    throw new Error('Registration endpoint not found. Tried: ' + endpoints.join(', '));
   };
 
   const value = {
