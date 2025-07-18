@@ -5,14 +5,15 @@ WORKDIR /app
 # Copy package files first for better caching
 COPY package*.json ./
 
-# Install dependencies with specific npm settings to avoid warnings
-RUN npm ci --omit=dev --silent
+# Install dependencies
+RUN npm ci --silent
 
 # Copy source code
 COPY . .
 
-# Set environment variable to disable ESLint warnings as errors during build
+# Set environment variables to disable strict linting
 ENV CI=false
+ENV GENERATE_SOURCEMAP=false
 
 # Build the app
 RUN npm run build
@@ -28,8 +29,8 @@ RUN adduser -S nextjs -u 1001
 RUN chown -R nextjs:nodejs /app
 USER nextjs
 
-# Expose port (Railway will set PORT env var)
+# Expose port
 EXPOSE 3000
 
-# Start the app - Railway provides PORT env variable
+# Start the app
 CMD ["sh", "-c", "serve -s build -l ${PORT:-3000}"]
