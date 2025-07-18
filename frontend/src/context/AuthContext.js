@@ -13,7 +13,8 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token'));
 
   // TEMPORARILY HARDCODE THE API URL FOR TESTING
-  const API_BASE_URL = 'https://taxbox-ai-enhanced-backend-1-production.up.railway.app';
+  // Replace line 11 with:
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://taxbox-ai-enhanced-backend-1-production-2bcd.up.railway.app';
   
   // Log for debugging
   console.log('API_BASE_URL set to:', API_BASE_URL);
