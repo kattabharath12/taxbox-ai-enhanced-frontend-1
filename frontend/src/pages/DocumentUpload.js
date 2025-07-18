@@ -5,7 +5,6 @@ const DocumentUpload = () => {
   const [documents, setDocuments] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
-  const [selectedDocument, setSelectedDocument] = useState(null);
   const [w2Data, setW2Data] = useState(null);
   const [showW2Modal, setShowW2Modal] = useState(false);
 
